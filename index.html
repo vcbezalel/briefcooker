@@ -1,0 +1,237 @@
+<!doctype html>
+<html dir="rtl">
+  <head>
+    <title>הפרויקט שלנו יהיה...</title>
+    <meta charset="utf-8">
+    <meta property="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Miriam+Libre:400,700&amp;subset=hebrew" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2">
+  </head>
+  <body>
+	  
+	<article>
+		
+		<section class="applications">
+			<span class="label">הפרויקט שלנו יהיה</span>
+			<label>
+				<select>
+				</select>
+				<span class="label-text"></span>
+			</label>
+		</section>
+
+		<section class="techniques">
+			<span class="label">בטכניקה</span>
+			<label>
+				<select>
+				</select>
+				<span class="label-text"></span>
+			</label>
+		</section>
+
+		<section class="formats">
+			<span class="label">בפורמט של</span>
+			<label>
+				<select>
+				</select>
+				<span class="label-text"></span>
+			</label>
+		</section>
+		
+	</article>
+	
+	<aside>
+		
+	</aside>
+    
+	<div class="refresh">
+		<button class="refresh-button" title="רענן (אפשר גם ללחוץ אנטר)">🔄</button>
+	</div>
+
+	<button class="settings-button" title="כתיבת הגדרות"></button>
+	
+    <script type="text/javascript">
+	    
+	    if ( 'options' in localStorage ) {
+		    
+		    var options = JSON.parse( localStorage.options );
+		    
+	    } else {
+		    
+		    var options = {
+			    
+				applications: [ "סיפור חזותי", "סיפור אינטראקטיבי", "כלי עזר", "תדמית", "קטלוג", "קמפיין", "מניפסט", "בחן את עצמך", "משחק לוח" ],
+	
+				techniques: [ "איורית", "טיפוגרפית", "צילומית", "ידנית בלבד", "של שחור/לבן", "מבוססת רדי-מייד", "מבוססת קוד" ],
+	
+				formats: [ "מושן גרפיקס", "אתר אינטרנט", "אפליקציה", "ספר", "מרצ׳נדייז", "סדרת חוברות", "סדרת פוסטרים", "סדרת אריזות", "הצבה במרחב", "וידאו-מאפינג", "מערכת שילוט" ]
+				
+			};
+			
+			localStorage.options = JSON.stringify( options );
+			
+	    }
+	    
+		
+		Object.keys( options ).forEach( ( key ) => {
+			
+			var sectionEl = document.createElement( "SECTION" );
+			
+			var inputEl = document.createElement( "INPUT" );
+			
+			var listElement = document.createElement( "UL" );
+			
+			options[ key ].forEach( ( option ) => {
+				
+				var itemElement = document.createElement( "LI" );
+				
+				itemElement.innerHTML = option;
+				
+				var removeButton = document.createElement( "BUTTON" );
+				
+				removeButton.innerHTML = "❌";
+				
+				removeButton.addEventListener( "click", e => {
+					
+					options[ key ].splice( options[ key ].indexOf( option ), 1 );
+					
+					localStorage.options = JSON.stringify( options );
+					
+					itemElement.remove();
+					
+					document.querySelector( "article section." + key + " select option[value='" + option + "']" ).remove();
+										
+				} );
+				
+				itemElement.prepend( removeButton );
+				
+				listElement.appendChild( itemElement );
+				
+				var optionEl = document.createElement( "OPTION" );
+				
+				optionEl.value = option;
+				
+				optionEl.innerHTML = option;
+				
+				document.querySelector( "article section." + key + " select" ).appendChild( optionEl );
+				
+			} );
+			
+			inputEl.addEventListener( "keyup", ( e ) => {
+				
+				if ( e.keyCode == 13 ) {
+					
+					e.preventDefault();
+					
+					options[ key ].push( inputEl.value );
+
+					localStorage.options = JSON.stringify( options );
+					
+					var itemElement = document.createElement( "LI" );
+					
+					itemElement.innerHTML = inputEl.value;
+					
+					listElement.appendChild( itemElement );
+	
+					var optionEl = document.createElement( "OPTION" );
+					
+					optionEl.innerHTML = inputEl.value;
+					
+					document.querySelector( "article section." + key + " select" ).appendChild( optionEl );
+					
+					inputEl.value = '';
+					
+				}
+				
+			} );
+			
+			sectionEl.appendChild( listElement );
+			
+			sectionEl.appendChild( inputEl );
+			
+			document.querySelector( "aside" ).appendChild( sectionEl );
+	    
+		} );
+		
+	    document.querySelectorAll( "label" ).forEach( labelElement => {
+		    
+		    var selectElement = labelElement.querySelector( "select" );
+		    
+		    selectElement.addEventListener( "input", e => {
+			    
+			    labelElement.querySelector( ".label-text" ).innerHTML = e.currentTarget.value;
+			    
+			    labelElement.dataset.locked = true;
+			    
+			} );
+		    
+	    } );
+	    
+	    var refresh = () => {
+
+		    document.querySelectorAll( "label" ).forEach( labelElement => {
+			    
+			    if ( 'locked' in labelElement.dataset ) return;
+			    
+			    var selectElement = labelElement.querySelector( "select" );
+			    
+			    selectElement.selectedIndex = Math.floor( Math.random() * selectElement.length );
+			    
+			    labelElement.querySelector( ".label-text" ).innerHTML = selectElement.value;
+			    
+		    } );
+		    
+	    }
+	    
+	    refresh();
+
+		window.addEventListener( "keydown", e => {
+			if ( e.key === 'Alt' ) {
+				document.body.classList.add( "alt-down" );
+			}
+		} );
+	    
+	    window.addEventListener( "keyup", ( e ) => {
+		    
+		    if ( e.target.className == "refresh-button" ) return;
+
+			if ( e.key === 'Alt' ) {
+				document.body.classList.remove( "alt-down" );
+			}
+		    
+		    if ( 13 == e.keyCode ) {
+			    
+			    refresh();
+			    
+		    }
+
+		    if ( e.altKey && ( 82 == e.keyCode ) ) { // Alt+R - reset local storage
+			    
+			    localStorage.clear();
+
+				window.location.reload();
+
+		    }
+		    
+		    if ( e.altKey && ( 83 == e.keyCode ) ) { // Alt+S - toggle settings
+			    
+			    document.body.className = ( document.body.className ) ? "" : "settings-active";
+
+		    }
+		    
+	    } );
+	    
+	    document.querySelector( ".refresh-button" ).addEventListener( "click", e => refresh() );
+
+		document.querySelector( ".settings-button" ).addEventListener( "click", e => {
+			if ( e.altKey ) {
+				localStorage.clear();
+				window.location.reload();
+			}
+			document.body.className = ( document.body.className ) ? "" : "settings-active";
+		 } );
+
+	</script>
+
+  </body>
+</html>					        
