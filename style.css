@@ -153,5 +153,6 @@ body.alt-down .settings-button:before {
 @media screen and (max-width: 640px) {
 	aside {
 		display: block;
+		max-height: 60vh;
 	}
 }
