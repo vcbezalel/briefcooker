@@ -1,6 +1,16 @@
-body, input, select {
+:root {
+	-webkit-text-size-adjust: none;
 	font-family: "Miriam Libre";
+	font-size: 100%;
 	line-height: 1.4;	
+}
+
+* {
+	box-sizing: border-box;
+}
+
+input, select {
+	font-family: inherit;
 }
 
 button {
@@ -12,12 +22,12 @@ button {
 
 article {
 	max-width: 640px;
-	margin: 1em auto;
-	font-size: 64px;
-}
-
-article section {
-	display: inline;
+	height: calc( 100vh - 5em );
+	margin: 1em auto 4em;
+	padding: 0 1em;
+	font-size: clamp( 24px, 6vw, 64px );
+	display: grid;
+	place-content: center;
 }
 
 label {
@@ -40,6 +50,8 @@ aside {
 	left: 0;
 	right: 0;
 	padding: 1em;
+	max-height: 80vh;
+	overflow: hidden auto;
 	background-color: rgba(249, 220, 103, 0.92);
 	z-index: 1000;
 	display: flex;
@@ -119,4 +131,10 @@ body.settings-active .settings-button:before {
 
 body.alt-down .settings-button:before {
 	content: "💣";
+}
+
+@media screen and (max-width: 640px) {
+	aside {
+		display: block;
+	}
 }
