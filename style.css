@@ -35,13 +35,13 @@ label {
 	white-space: nowrap;
 }
 
-label:hover select {
-	opacity: 1;
-}
-
 select {
 	position: absolute;
 	opacity: 0;
+	visibility: hidden;
+	top: -1rem;
+	right: 50%;
+	transform: translateX( 50% );
 }
 
 aside {
@@ -131,6 +131,23 @@ body.settings-active .settings-button:before {
 
 body.alt-down .settings-button:before {
 	content: "💣";
+}
+
+@media ( hover: hover ) {
+	label:hover select {
+		opacity: 1;
+		visibility: visible;
+	}
+}
+
+@media ( hover: none ) {
+	select {
+		visibility: visible;
+		top: 0;
+	}
+	article label span {
+		pointer-events: none;
+	}
 }
 
 @media screen and (max-width: 640px) {
